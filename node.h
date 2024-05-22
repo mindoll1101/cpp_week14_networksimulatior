@@ -15,6 +15,7 @@ private:
 public:
   Node() : id_(nextId_++) {}
   int id() const { return id_; }
+  bool operator==(Node *a);
 };
 
 #endif
