@@ -3,6 +3,7 @@
 
 #include "packet.h"
 #include <cstdlib>
+#include <iostream>
 
 class Node;
 
@@ -14,10 +15,13 @@ private:
 
   Node *nodeA_;
   Node *nodeB_;
-
+  
+  // 매개변수로 주어진 노드가 아닌 반대편 노드를 구한다.
   Node *other(const Node *node) const {
     return node == nodeA_ ? nodeB_ : nodeA_;
   }
+public:
+  void link(Node *node, Packet *packet);
 };
 
 #endif

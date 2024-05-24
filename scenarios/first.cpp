@@ -16,7 +16,7 @@ int main() {
   // 호스트를 생성한다
   Host *echoServer = new Host(1);
   Host *messageClient = new Host(0);
-
+  
   // 서비스를 설치한다
   EchoServiceInstaller echoServiceInstaller(ECHO_PORT);
   echoServiceInstaller.install(echoServer);

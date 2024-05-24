@@ -1,8 +1,10 @@
 #include "link.h"
-#include <iostream>
+#include "link_installer.h"
+#include "node.h"
 
 Link *LinkInstaller::install(Node *a, Node *b){
   Link *newLink = new Link(a, b);
-  std::cout << "Link: forwarding packet from node #" << newLink -> other(b) -> id() << ", to node #" << newLink -> other(a) -> id() << std::endl;
+  (a -> Node::links_).push_back(newLink);
+  (b -> Node::links_).push_back(newLink);
   return newLink;
 }
