@@ -27,14 +27,14 @@ void Host::receive(){
     }
   }
   if(!existService){
-    std::cout << "Host #" << id() << ": no service for packet (from: " << packet_ -> srcAddress().toString() << ", to: " << packet_ -> destAddress().toString() << ", " << packet_ -> dataString().length() << "bytes)" << std::endl;
+    std::cout << "Host #" << id() << ": no service for packet (from: " << packet_ -> srcAddress().toString() << ", to: " << packet_ -> destAddress().toString() << ", " << packet_ -> dataString().length() << " bytes)" << std::endl;
     // Host #0: no service for packet (from: 456, to: 123, 7 bytes)
   }
 }
 
 // 링크를 랜덤으로 하나 선택하여 패킷을 전송한다.
 void Host::send(Packet *packet){
-  std::cout << "Host #" << id() << ": sending packet (from: " << packet -> srcAddress().toString() << ", to: " << packet -> destAddress().toString() <<", " << packet -> dataString().length() << "bytes)" << std::endl;
+  std::cout << "Host #" << id() << ": sending packet (from: " << packet -> srcAddress().toString() << ", to: " << packet -> destAddress().toString() <<", " << packet -> dataString().length() << " bytes)" << std::endl;
   int n = rand() % links_.size();
   links_.at(n) -> link(this, packet);
 }
