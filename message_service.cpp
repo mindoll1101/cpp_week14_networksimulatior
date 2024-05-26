@@ -2,12 +2,11 @@
 #include "packet.h"
 #include <iostream>
 // 메시지를 전송한다
-short MessageService::srcPort_ = 1000;
+
 MessageService::~MessageService(){
   delete packet_;
 }
 void MessageService::init(){
-  port_ = srcPort_++;
   packet_ = nullptr;
 }
 void MessageService::send(std::string message){
