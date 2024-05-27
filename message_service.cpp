@@ -7,6 +7,7 @@ MessageService::~MessageService(){
   delete packet_;
 }
 void MessageService::init(){
+  
   packet_ = nullptr;
 }
 void MessageService::send(std::string message){

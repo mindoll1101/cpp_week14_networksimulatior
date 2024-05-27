@@ -27,7 +27,7 @@ public:
   void send(Packet *packet);
   void receive();
 
-  int getServicesCount(){return (int)services_.size();}
+  std::vector<Service *> getServices(){return services_;}
 };
 
 #endif

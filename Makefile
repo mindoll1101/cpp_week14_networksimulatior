@@ -39,8 +39,8 @@ echo_service_installer.o: echo_service_installer.cpp echo_service_installer.h se
 first.o: scenarios/first.cpp echo_service.h echo_service_installer.h host.h link_installer.h manual_router.h message_service_installer.h
 	$(CC) $(CFLAGS) -c -o first.o scenarios/first.cpp
 
-second.o: scenarios/second.cpp
-	$(CC) $(CFLAGS) -c scenarios/second.cpp
+second.o: scenarios/second.cpp echo_service.h echo_service_installer.h host.h link_installer.h manual_router.h message_service_installer.h
+	$(CC) $(CFLAGS) -c -o second.o scenarios/second.cpp
 
 first: first.o echo_service.o echo_service_installer.o host.o link_installer.o manual_router.o message_service_installer.o message_service.o node.o service_installer.o link.o router.o
 	$(CC) $(CFLAGS) -o first first.o echo_service.o echo_service_installer.o host.o link_installer.o manual_router.o message_service_installer.o message_service.o node.o service_installer.o link.o router.o 
