@@ -17,9 +17,8 @@ private:
   virtual std::string name(){return "Link";}
   Node *nodeA_;
   Node *nodeB_;
-  Node *otherNode_;
   double delay_;
-  std::vector<Packet *> packets_;
+  std::vector<std::pair<Node *, Packet *>> packets_;
   int sendCount_;
 public:
   ~Link(){}

@@ -18,6 +18,7 @@ public:
     totalBytes_ += (int)packet -> data().size();
     std::string message = "received total " + std::to_string(totalBytes_) + " bytes";
     log(message);
+    delete packet;
   }
 };
 

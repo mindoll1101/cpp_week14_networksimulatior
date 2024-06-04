@@ -4,6 +4,7 @@
 #include "address.h"
 #include "packet.h"
 #include "service.h"
+#include <iostream>
 #include <vector>
 
 class Host : public Node {
@@ -37,7 +38,7 @@ public:
     message += packet -> toString();
     log(message);
     int n = rand() % links_.size();
-    links_.at(n) -> link(this, packet);
+    links_[n] -> link(this, packet);
   }
 
   void receive(Packet *packet){
@@ -55,7 +56,12 @@ public:
       }
     }
     if(!existService){
-      std::cout << "Host #" << id() << ": no service for packet (from: " << packet -> srcAddress().toString() << ", to: " << packet -> destAddress().toString() << ", " << packet -> dataString().length() << " bytes)" << std::endl;
+      std::cout << packet -> destPort() << std::endl;
+      std::cout << packet -> destAddress().toString() << std::endl;
+      message = "no service for packet: ";
+      message += packet -> toString();
+      log(message);
+      delete packet;
       // Host #0: no service for packet (from: 456, to: 123, 7 bytes)
     }
   }

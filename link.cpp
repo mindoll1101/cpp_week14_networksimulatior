@@ -6,11 +6,10 @@
 #include <functional>
 
 void Link::link(Node *node, Packet *packet){
-  otherNode_ = other(node);
-  packets_.push_back(packet);
+  packets_.push_back(std::make_pair(other(node), packet));
   // o -> setPacket(packet);
   std::string message = "packet in: ";
-  message += packet -> toString() + " from " + other(otherNode_) -> toString();
+  message += packet -> toString() + " from " + node -> toString();
   log(message);
   std::function<void()> fptr = [this](){this -> packetOut();};
   Simulator::schedule(Simulator::now() + delay_, fptr);
@@ -18,8 +17,8 @@ void Link::link(Node *node, Packet *packet){
 
 void Link::packetOut(){
   std::string message = "packet out: ";
-  message += packets_[sendCount_] -> toString() + " to " + otherNode_ -> toString();
+  message += packets_[sendCount_].second -> toString() + " to " + packets_[sendCount_].first -> toString();
   log(message);
-  otherNode_ -> receive(packets_[sendCount_]);
+  packets_[sendCount_].first -> receive(packets_[sendCount_].second);
   sendCount_++;
 }

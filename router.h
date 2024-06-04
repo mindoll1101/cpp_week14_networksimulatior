@@ -32,7 +32,10 @@ public:
       }
     }
     if(!existDest){
-      std::cout << "Router #" << id() << ": no route for packet (from: " << packet -> srcAddress().toString() << ", to: " << packet -> destAddress().toString() << ", " << packet -> dataString().length() << " bytes)" << std::endl;
+      std::string message = "no route for packet: ";
+      message += packet -> toString();
+      log(message);
+      delete packet;
     }
   }
 };

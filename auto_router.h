@@ -33,7 +33,6 @@ public:
       d.push_back(INF);
       if(nodes[i] -> toString().find("<Host>") != std::string::npos){
         hosts.push_back(std::make_pair(dynamic_cast<Host *>(nodes[i]) -> address(), nodes[i]));
-        std::cout << nodes[i] -> id() << std::endl;
       }
       for(size_t j = 0; j < links.size(); j++){
         if(links[j] -> nodeA() == nodes[i] || links[j] -> nodeB() == nodes[i]){

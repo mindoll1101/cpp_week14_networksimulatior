@@ -19,15 +19,12 @@ private:
   // 목적지 포트
   short destPort_;
   Packet *packet_;
-  virtual std::string name(){return "Node #";}
+  virtual std::string name(){return "MessageService";}
   MessageService(Host *host, short port, Address destAddress, short destPort)
       : Service(host, port), destAddress_(destAddress), destPort_(destPort) {}
 
 public:
   // 메시지를 전송한다
-  ~MessageService(){
-    delete packet_;
-  }
   void init(){
     packet_ = nullptr;
   }
@@ -38,6 +35,7 @@ public:
   void execute(Packet *packet){
     std::string message = packet -> dataString();
     log(message);
+    delete packet;
   }
 };
 

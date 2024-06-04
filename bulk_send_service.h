@@ -21,17 +21,13 @@ private:
   double startTime_;
   double stopTime_;
   std::vector<Packet *> packets_;
+  std::string data_;
   BulkSendService(Host *host, Address destAddress, short destPort,
                   double delay = 1, double startTime = 0,
                   double stopTime = 10.0)
      : Service(host, CLIENT_PORT), destAddress_(destAddress), destPort_(destPort), delay_(delay), startTime_(startTime), stopTime_(stopTime){}
   virtual std::string name(){return "BulkSendService";}
 public:
-  ~BulkSendService(){
-    for(size_t i = 0; i < packets_.size(); i++){
-      delete packets_[i];
-    }
-  }
   void init(){
     std::vector <Service *> services = host_ -> getServices();
     short port = CLIENT_PORT;
@@ -40,29 +36,28 @@ public:
         port++;
       }
     }
-    Service::port_ = port;
+    data_ = "";
+    for(int i = 0; i < PACKET_SIZE; i++){
+      data_ += "A";
+    }
+    port_ = port;
     packet_ = nullptr;
-    std::function<void()> fptr = [this](){this -> send();};
-    Simulator::schedule(startTime_, fptr);
-    stopTime_ -= startTime_;
-    startTime_ += delay_;
-  }
-  void send(){
-    std::vector<char> data(512);
-    if(stopTime_ > 0.0){
-      packet_ = new Packet(host_ -> address(), destAddress_, Service::port_, destPort_, data);
+    log("");
+    while(startTime_ < stopTime_){
       std::function<void()> fptr = [this](){this -> send();};
       Simulator::schedule(startTime_, fptr);
       packets_.push_back(packet_);
-      stopTime_ -= delay_;
       startTime_ += delay_;
-      execute(packet_);
     }
   }
-  void execute(Packet *packet){
+  void send(){
+    Packet *packet = new Packet(host_ -> address(), destAddress_, port_, destPort_, data_);
     std::string message = "sending data";
     log(message);
     host_ -> send(packet);
+  }
+  void execute(Packet *packet){
+    delete packet;
   }
 };
 
