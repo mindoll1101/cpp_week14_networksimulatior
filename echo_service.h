@@ -12,14 +12,26 @@ class EchoService : public Service {
   friend class EchoServiceInstaller;
 
 private:
+  virtual std::string name(){return "Node #";}
   Packet *packet_;
   EchoService(Host *host, short port) : Service(host, port) {}
   
 public:
-  ~EchoService();
-  void init();
-  void send();
-  void execute();
+  ~EchoService(){
+    delete packet_;
+  }
+  void init(){
+    packet_ = nullptr;
+  }
+  void send(Packet *packet){
+    packet_ = new Packet(host_ -> address(), packet -> srcAddress(), port_, packet -> srcPort(), packet -> data());
+    host_ -> send(packet_);
+  }
+  void execute(Packet *packet){
+    std::string message = packet -> dataString();
+    log(message);
+    send(packet);
+  }
 };
 
 #endif

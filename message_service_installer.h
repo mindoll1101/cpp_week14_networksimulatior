@@ -18,7 +18,18 @@ public:
       : destAddress_(destAddress), destPort_(destPort) {}
 
   // 호스트에 MessageService를 설치한다
-  MessageService *install(Host *host);
+  MessageService *install(Host *host){
+    std::vector <Service *> services = host -> getServices();
+    short port = CLIENT_PORT;
+    for(int i = 0; i < (int)services.size(); i++){
+      if(services[i] -> getPort() == port){
+        port++;
+      }
+    }
+    message_ = new MessageService(host, port, destAddress_, destPort_);
+    ServiceInstaller::install(host, message_);
+    return message_;
+  }
 };
 
 #endif

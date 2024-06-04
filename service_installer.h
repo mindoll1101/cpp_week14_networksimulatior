@@ -8,7 +8,9 @@
 class ServiceInstaller {
 protected:
   // 호스트와 서비스 사이의 관계를 설정한다.
-  void install(Host *host, Service *service);
+  void install(Host *host, Service *service){
+    host -> services_.push_back(service);
+  }
 };
 
 #endif

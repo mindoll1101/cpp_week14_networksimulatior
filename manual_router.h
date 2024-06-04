@@ -5,11 +5,15 @@
 #include "router.h"
 
 class ManualRouter : public Router {
-
+private:
+  virtual std::string name(){return "ManualRouter";}
 public:
   // 목적지 주소에 따른 다음 링크를 설정한다.
-  void receive(){Router::receive();}
-  void addRoutingEntry(const Address &destination, Link *nextLink);
+  ~ManualRouter(){};
+  void addRoutingEntry(const Address &destination, Link *nextLink){
+    struct RoutingEntry entry = {destination, nextLink};
+    routingTable_.push_back(entry);
+  }
 };
 
 #endif

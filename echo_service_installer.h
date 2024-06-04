@@ -14,7 +14,11 @@ private:
 public:
   EchoServiceInstaller(short listenPort) : listenPort_(listenPort) {}
   // 호스트에 EchoService를 설치한다.
-  EchoService *install(Host *host);
+  EchoService *install(Host *host){
+    echo_ = new EchoService(host, listenPort_);
+    ServiceInstaller::install(host, echo_);
+    return echo_;
+  }
 };
 
 #endif
