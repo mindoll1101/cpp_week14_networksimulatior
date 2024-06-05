@@ -25,7 +25,8 @@ public:
     host_ -> send(packet_);
   }
   void execute(Packet *packet){
-    std::string message = packet -> dataString();
+    std::string message = "received \"" + packet -> dataString() + "\" from " + packet -> srcAddress().toString() + ":" 
+                        + std::to_string(packet -> srcPort()) + " send reply with same data";
     log(message);
     send(packet);
     delete packet;

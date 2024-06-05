@@ -56,8 +56,6 @@ public:
       }
     }
     if(!existService){
-      std::cout << packet -> destPort() << std::endl;
-      std::cout << packet -> destAddress().toString() << std::endl;
       message = "no service for packet: ";
       message += packet -> toString();
       log(message);
