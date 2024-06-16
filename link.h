@@ -31,7 +31,11 @@ public:
   Node *nodeA() { return nodeA_; }
 
   Node *nodeB() { return nodeB_; }
-
+  
+  // bool operator==(Link *link){
+  //   return toString() == link -> toString();
+  // }
+  virtual void initialzie(){}
   // 매개변수로 주어진 노드가 아닌 반대편 노드를 구한다.
   Node *other(const Node *node) const {
     return node == nodeA_ ? nodeB_ : nodeA_;

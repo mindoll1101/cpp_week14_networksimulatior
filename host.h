@@ -4,6 +4,7 @@
 #include "address.h"
 #include "packet.h"
 #include "service.h"
+#include "link.h"
 #include <iostream>
 #include <vector>
 
@@ -20,15 +21,10 @@ private:
 public:
   Address address() { return address_; }
   Host(Address address) : address_(address) {}
-  ~Host(){
-    for(int i = 0; i < (int)services_.size(); i++){
-      delete services_[i];
-    }
-  }
   // 호스트와 설치된 서비스를 전부 초기화한다.
   void initialize(){
     for(int i = 0; i < (int)services_.size(); i++){
-      services_[i] -> init();
+      services_[i] -> initialize();
     }
   }
 
@@ -41,7 +37,7 @@ public:
     links_[n] -> link(this, packet);
   }
 
-  void receive(Packet *packet){
+  void receive(Packet *packet, Link *link){
     // Host #0: received packet, destination port: 3000
     std::string message = "received packet: ";
     message += packet -> toString();
@@ -59,7 +55,6 @@ public:
       message = "no service for packet: ";
       message += packet -> toString();
       log(message);
-      delete packet;
       // Host #0: no service for packet (from: 456, to: 123, 7 bytes)
     }
   }

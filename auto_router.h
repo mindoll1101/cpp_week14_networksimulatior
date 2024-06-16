@@ -23,53 +23,60 @@ public:
     // 전체 노드와 링크 정보를 통해
     // 모든 호스트로 전달될 수 있는 라우팅 테이블을 구성한다
     // TODO: 구현
-    std::priority_queue<std::pair<Node *, double>> pq;
-    std::vector<std::pair<Node *, Link *>> route;
-    std::vector<std::pair<Address, Node *>> hosts;
-    std::vector<std::pair<Node *, Link *>> *a = new std::vector<std::pair<Node *, Link *>>[nodes.size()];
-    std::vector<std::pair<Node *, Link *>> *b = new std::vector<std::pair<Node *, Link *>>[nodes.size()];
+    std::priority_queue<std::pair<int, double>> pq;
+    std::vector<Node *> route;
+    std::vector<Node *> hosts;
+    std::vector<std::pair<int, Link *>> *a = new std::vector<std::pair<int, Link *>>[nodes.size()];
+    std::vector<Link *> *b = new std::vector<Link *>[nodes.size()];
     double INF = 10000000.0;
     for(size_t i = 0; i < nodes.size(); i++){
       d.push_back(INF);
-      if(nodes[i] -> toString().find("<Host>") != std::string::npos){
-        hosts.push_back(std::make_pair(dynamic_cast<Host *>(nodes[i]) -> address(), nodes[i]));
+      if(nodes[i] -> toString().find("<Host>") != std::string::npos || nodes[i] -> toString().find("<Nat>") != std::string::npos){
+        hosts.push_back(nodes[i]);
       }
       for(size_t j = 0; j < links.size(); j++){
         if(links[j] -> nodeA() == nodes[i] || links[j] -> nodeB() == nodes[i]){
-          a[i].push_back(std::make_pair(links[j] -> other(nodes[i]), links[j]));
+          a[i].push_back(std::make_pair(std::find(nodes.begin(), nodes.end(), links[j] -> other(nodes[i])) - nodes.begin(), links[j]));
         }
       }
     }
-    pq.push(std::make_pair(this, 0));
-    d[this -> id()] = 0;
+    int current = std::find(nodes.begin(), nodes.end(), this) - nodes.begin();
+    pq.push(std::make_pair(current, 0));
+    d[current] = 0;
     while(!pq.empty()){
-      Node *current = pq.top().first;
+      current = pq.top().first;
       double distance = -pq.top().second;
       pq.pop();
-      if(d[current -> id()] < distance) continue;
-      for(size_t i = 0; i < a[current -> id()].size(); i++){
-        Node *next = a[current -> id()][i].first;
-        Link *currentLink = a[current -> id()][i].second;
+      if(d[current] < distance) continue;
+      for(size_t i = 0; i < a[current].size(); i++){
+        int next = a[current][i].first;
+        Link *currentLink = a[current][i].second;
         double nextDistance = distance + currentLink -> delay();
-        if(nextDistance < d[next -> id()]){
-          d[next -> id()] = nextDistance;
-          for(size_t j = 0; j < b[currentLink -> other(next) -> id()].size(); j++){
-            b[next -> id()].push_back(b[currentLink -> other(next) -> id()][j]);
+        if(nextDistance < d[next]){
+          d[next] = nextDistance;
+          for(size_t j = 0; j < b[current].size(); j++){
+            b[next].push_back(b[current][j]);
           }
-          b[next -> id()].push_back(std::make_pair(current, currentLink));
+          b[next].push_back(currentLink);
           pq.push(std::make_pair(next, -nextDistance));
-          route.push_back(std::make_pair(current, a[current -> id()][i].second));
         }
       }
     }
     for(size_t i = 0; i < hosts.size(); i++){
-      for(size_t j = 0; j < b[hosts[i].second -> id()].size(); j++){
-        RoutingEntry entry = {hosts[i].first, b[hosts[i].second -> id()][j].second};
+      current = std::find(nodes.begin(), nodes.end(), hosts[i]) - nodes.begin();
+      if(!b[current].empty()){
+        RoutingEntry entry = {hosts[i] -> address(), b[current][0]};
         routingTable_.push_back(entry);
       }
+      // for(size_t j = 0; j < b[current].size(); j++){
+      //   RoutingEntry entry = {hosts[i] -> address(), b[current][j]};
+      //   routingTable_.push_back(entry);
+      // }
     }
     a -> clear();
+    b -> clear();
     delete a;
+    delete b;
   }
 };
 

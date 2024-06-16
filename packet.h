@@ -37,6 +37,7 @@ public:
   // 패킷 데이터
   const std::vector<char> &data() { return data_; }
 
+  virtual void initialzie(){}
   // 패킷 데이터를 문자열로 변환한다
   std::string dataString() {
     std::string str;

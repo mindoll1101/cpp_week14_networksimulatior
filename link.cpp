@@ -19,6 +19,6 @@ void Link::packetOut(){
   std::string message = "packet out: ";
   message += packets_[sendCount_].second -> toString() + " to " + packets_[sendCount_].first -> toString();
   log(message);
-  packets_[sendCount_].first -> receive(packets_[sendCount_].second);
+  packets_[sendCount_].first -> receive(packets_[sendCount_].second, this);
   sendCount_++;
 }

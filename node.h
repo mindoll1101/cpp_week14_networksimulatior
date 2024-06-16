@@ -20,8 +20,9 @@ public:
   Node() : id_(nextId_++), packet_(nullptr) {}
 
   virtual ~Node(){};
-  virtual void receive(Packet *packet) = 0;
-
+  virtual void receive(Packet *packet, Link *link) = 0;
+  virtual void initialize(){}
+  virtual Address address(){return -1;}
   int id() const { return id_; }
   void setPacket(Packet *packet);
   Packet *getPacket(){return packet_;}

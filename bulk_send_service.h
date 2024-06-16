@@ -28,7 +28,7 @@ private:
      : Service(host, CLIENT_PORT), destAddress_(destAddress), destPort_(destPort), delay_(delay), startTime_(startTime), stopTime_(stopTime){}
   virtual std::string name(){return "BulkSendService";}
 public:
-  void init(){
+  void initialize(){
     std::vector <Service *> services = host_ -> getServices();
     short port = CLIENT_PORT;
     for(int i = 0; i < (int)services.size(); i++){
@@ -42,7 +42,6 @@ public:
     }
     port_ = port;
     packet_ = nullptr;
-    log("");
     while(startTime_ < stopTime_){
       std::function<void()> fptr = [this](){this -> send();};
       Simulator::schedule(startTime_, fptr);
@@ -56,9 +55,7 @@ public:
     log(message);
     host_ -> send(packet);
   }
-  void execute(Packet *packet){
-    delete packet;
-  }
+  void execute(Packet *packet){}
 };
 
 #endif

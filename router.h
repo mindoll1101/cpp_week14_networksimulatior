@@ -19,7 +19,7 @@ public:
   ~Router(){
     routingTable_.clear();
   }
-  void receive(Packet *packet){
+  void receive(Packet *packet, Link *link){
     bool existDest = false;
     for(int i = 0; i < (int)routingTable_.size(); i++){
       if(packet -> destAddress() == routingTable_[i].destination){
@@ -35,7 +35,6 @@ public:
       std::string message = "no route for packet: ";
       message += packet -> toString();
       log(message);
-      delete packet;
     }
   }
 };

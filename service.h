@@ -19,7 +19,7 @@ protected:
   
   Service(Host *host, short port) : host_(host), port_(port) {}
 public:
-  virtual void init() = 0;
+  virtual void initialize(){}
   virtual void execute(Packet *packet) = 0;
   short getPort(){return port_;}
 };

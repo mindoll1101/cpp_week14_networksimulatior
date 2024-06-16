@@ -17,7 +17,7 @@ private:
   EchoService(Host *host, short port) : Service(host, port) {}
   
 public:
-  void init(){
+  void initialize(){
     packet_ = nullptr;
   }
   void send(Packet *packet){
@@ -29,7 +29,6 @@ public:
                         + std::to_string(packet -> srcPort()) + " send reply with same data";
     log(message);
     send(packet);
-    delete packet;
   }
 };
 
