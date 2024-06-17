@@ -32,8 +32,8 @@ public:
 
   Node *nodeB() { return nodeB_; }
   
-  // bool operator==(Link *link){
-  //   return toString() == link -> toString();
+  // bool operator<(Link *link){
+  //   return delay_ > link -> delay();
   // }
   virtual void initialzie(){}
   // 매개변수로 주어진 노드가 아닌 반대편 노드를 구한다.

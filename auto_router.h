@@ -54,6 +54,7 @@ public:
         double nextDistance = distance + currentLink -> delay();
         if(nextDistance < d[next]){
           d[next] = nextDistance;
+          b[next].clear();
           for(size_t j = 0; j < b[current].size(); j++){
             b[next].push_back(b[current][j]);
           }
@@ -64,14 +65,13 @@ public:
     }
     for(size_t i = 0; i < hosts.size(); i++){
       current = std::find(nodes.begin(), nodes.end(), hosts[i]) - nodes.begin();
-      if(!b[current].empty()){
-        RoutingEntry entry = {hosts[i] -> address(), b[current][0]};
-        routingTable_.push_back(entry);
+      for(size_t j = 0; j < b[current].size(); j++){
+        if(b[current][j] -> nodeA() == nodes[i] || b[current][j] -> nodeB() == nodes[i]){
+          RoutingEntry entry = {nodes[current] -> address(), b[current][j]};
+          routingTable_.push_back(entry);
+          break;
+        }
       }
-      // for(size_t j = 0; j < b[current].size(); j++){
-      //   RoutingEntry entry = {hosts[i] -> address(), b[current][j]};
-      //   routingTable_.push_back(entry);
-      // }
     }
     a -> clear();
     b -> clear();
