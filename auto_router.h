@@ -66,11 +66,12 @@ public:
     for(size_t i = 0; i < hosts.size(); i++){
       current = std::find(nodes.begin(), nodes.end(), hosts[i]) - nodes.begin();
       for(size_t j = 0; j < b[current].size(); j++){
-        if(b[current][j] -> nodeA() == nodes[i] || b[current][j] -> nodeB() == nodes[i]){
-          RoutingEntry entry = {nodes[current] -> address(), b[current][j]};
-          routingTable_.push_back(entry);
-          break;
-        }
+        RoutingEntry entry = {nodes[current] -> address(), b[current][j]};
+        routingTable_.push_back(entry);
+        // if(b[current][j] -> nodeA() == nodes[i] || b[current][j] -> nodeB() == nodes[i]){
+          
+        //   break;
+        // }
       }
     }
     a -> clear();
