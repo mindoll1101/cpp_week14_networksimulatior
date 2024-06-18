@@ -24,10 +24,10 @@ public:
     // 모든 호스트로 전달될 수 있는 라우팅 테이블을 구성한다
     // TODO: 구현
     std::priority_queue<std::pair<int, double>> pq;
-    std::vector<Node *> route;
     std::vector<Node *> hosts;
-    std::vector<std::pair<int, Link *>> *a = new std::vector<std::pair<int, Link *>>[nodes.size()];
-    std::vector<Link *> *b = new std::vector<Link *>[nodes.size()];
+    std::vector<std::pair<int, Link *>> *vertex = new std::vector<std::pair<int, Link *>>[nodes.size()];
+    std::vector<Link *> *route = new std::vector<Link *>[nodes.size()];
+
     double INF = 10000000.0;
     for(size_t i = 0; i < nodes.size(); i++){
       d.push_back(INF);
@@ -36,7 +36,7 @@ public:
       }
       for(size_t j = 0; j < links.size(); j++){
         if(links[j] -> nodeA() == nodes[i] || links[j] -> nodeB() == nodes[i]){
-          a[i].push_back(std::make_pair(std::find(nodes.begin(), nodes.end(), links[j] -> other(nodes[i])) - nodes.begin(), links[j]));
+          vertex[i].push_back(std::make_pair(std::find(nodes.begin(), nodes.end(), links[j] -> other(nodes[i])) - nodes.begin(), links[j]));
         }
       }
     }
@@ -48,36 +48,30 @@ public:
       double distance = -pq.top().second;
       pq.pop();
       if(d[current] < distance) continue;
-      for(size_t i = 0; i < a[current].size(); i++){
-        int next = a[current][i].first;
-        Link *currentLink = a[current][i].second;
+      for(size_t i = 0; i < vertex[current].size(); i++){
+        int next = vertex[current][i].first;
+        Link *currentLink = vertex[current][i].second;
         double nextDistance = distance + currentLink -> delay();
         if(nextDistance < d[next]){
           d[next] = nextDistance;
-          b[next].clear();
-          for(size_t j = 0; j < b[current].size(); j++){
-            b[next].push_back(b[current][j]);
+          route[next].clear();
+          for(size_t j = 0; j < route[current].size(); j++){
+            route[next].push_back(route[current][j]);
           }
-          b[next].push_back(currentLink);
+          route[next].push_back(currentLink);
           pq.push(std::make_pair(next, -nextDistance));
         }
       }
     }
     for(size_t i = 0; i < hosts.size(); i++){
       current = std::find(nodes.begin(), nodes.end(), hosts[i]) - nodes.begin();
-      for(size_t j = 0; j < b[current].size(); j++){
-        RoutingEntry entry = {nodes[current] -> address(), b[current][j]};
-        routingTable_.push_back(entry);
-        // if(b[current][j] -> nodeA() == nodes[i] || b[current][j] -> nodeB() == nodes[i]){
-          
-        //   break;
-        // }
-      }
+      RoutingEntry entry = {nodes[current] -> address(), route[current][0]};
+      routingTable_.push_back(entry);
     }
-    a -> clear();
-    b -> clear();
-    delete a;
-    delete b;
+    vertex -> clear();
+    route -> clear();
+    delete vertex;
+    delete route;
   }
 };
 

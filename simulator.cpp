@@ -6,7 +6,6 @@ std::priority_queue<Schedule> Simulator::pq_;
 
 void Simulator::run() {
   Object::initializeAll();
-
   // 모든 스케줄을 실행한다.
   // TODO: 구현
   while(!pq_.empty()){

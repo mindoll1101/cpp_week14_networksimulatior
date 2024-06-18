@@ -33,7 +33,8 @@ public:
     host_ -> send(packet_);
   }
   void execute(Packet *packet){
-    std::string message = packet -> dataString();
+    std::string message = "received ";
+    message += packet -> dataString() + " from " + host_ -> toString();
     log(message);
   }
 };

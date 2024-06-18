@@ -53,5 +53,6 @@ fifth: fifth.o link_installer.o node.o link.o simulator.o object.o
 
 sixth: sixth.o link_installer.o node.o link.o simulator.o object.o
 	$(CC) $(CFLAGS) -o sixth sixth.o link_installer.o node.o link.o simulator.o object.o
+	
 clean:
 	rm -f *.o first second third forth fifth sixth

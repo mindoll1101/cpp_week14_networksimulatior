@@ -22,11 +22,7 @@ public:
   Address address() { return address_; }
   Host(Address address) : address_(address) {}
   // 호스트와 설치된 서비스를 전부 초기화한다.
-  void initialize(){
-    for(int i = 0; i < (int)services_.size(); i++){
-      services_[i] -> initialize();
-    }
-  }
+  void initialize(){}
 
   // 링크를 랜덤으로 하나 선택하여 패킷을 전송한다.
   void send(Packet *packet){
@@ -38,7 +34,6 @@ public:
   }
 
   void receive(Packet *packet, Link *link){
-    // Host #0: received packet, destination port: 3000
     std::string message = "received packet: ";
     message += packet -> toString();
     bool existService = false;
