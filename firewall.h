@@ -24,7 +24,7 @@ private:
   public:
     AllowAnyPolicy(short destPort) : destPort_(destPort) {}
     short getPolicyPort(){return destPort_;}
-    Address getPolicyAddr(){return -1;}
+    Address getPolicyAddr(){return Address("*");}
   };
 
   class AllowSpecificPolicy : public FirewallPolicy {
@@ -63,7 +63,7 @@ public:
     if(link == receiveLink_){
       for(FirewallPolicy *policy : policy_ -> whiteList_){
         if(policy -> getPolicyPort() == packet -> destPort()){
-          if(policy -> getPolicyAddr() == -1 || policy -> getPolicyAddr().toString() == packet -> srcAddress().toString()){
+          if(policy -> getPolicyAddr().toString() == "*" || policy -> getPolicyAddr().toString() == packet -> srcAddress().toString()){
             otherLink_ -> link(this, packet);
             return;
           }
