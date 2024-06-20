@@ -70,8 +70,8 @@ public:
     }
     vertex -> clear();
     route -> clear();
-    delete vertex;
-    delete route;
+    delete[] vertex;
+    delete[] route;
   }
 };
 
